@@ -1,177 +1,106 @@
 # GEO Monitor Toolkit
 
-**GEO Monitor Toolkit** 是一套面向 **开发者工具、API、SDK 与开源项目** 的 GEO（Generative Engine Optimization）监控与内容优化工具包。它不再只是流程说明，而是同时提供 **可运行 runner、可复现评分 rubric、结构化 schema、多行业 Query Pool 样例、修复验证模板与基础 CI**，帮助团队把 `关键词研究 → 监控 → 打分 → 周报 → 修复 → 回归验证` 串成一条可以落地执行的工作流。
+![CI](https://github.com/veeicwgy/geo-monitor-toolkit/actions/workflows/ci.yml/badge.svg)
+![Release](https://img.shields.io/github/v/release/veeicwgy/geo-monitor-toolkit)
+![Python](https://img.shields.io/badge/python-3.11-blue)
 
-该仓库依然以 **MinerU** 作为主案例，但本次升级后不再停留在文档骨架层，而是补上了最小可运行评估链路，方便团队从“策略讨论”走向“可审计复盘”。仓库设计继续参考可安装 Skill 仓库与 GEO 内容工作流项目的组织方式。[1] [2] [3]
+**GEO Monitor Toolkit** 是一套面向 **开发者工具、API、SDK 与开源项目** 的 GEO（Generative Engine Optimization）监控与内容优化工具包。它现在不仅提供 playbook，也提供 **可运行 runner、可复现评分 rubric、结构化 schema、CLI、leaderboard、repair loop 样例和 sample run 快照**，帮助团队把 `关键词研究 → 监控 → 打分 → 周报 → 修复 → 回归验证` 串成一条能演示、能协作、能复盘的工作流。
 
-## Why This Repository
+本仓库继续以 **MinerU** 作为主案例，并扩展到 SaaS、开源库和开发者工具多类 Query Pool。整体组织方式参考了可安装 Skill 仓库与 GEO 内容工作流项目。[1] [2] [3]
 
-| 维度 | 旧式文档型 GEO 仓库 | 本仓库升级后的定位 |
-|---|---|---|
-| 工作重心 | 方法论说明 | 方法论 + 可运行评估骨架 |
-| 主要对象 | 泛内容团队 | 开发者工具、开源项目、技术产品团队 |
-| 核心输出 | Playbook、SOP、模板 | Runner、评分草稿、结构化 summary、周报、修复验证记录 |
-| 可复现性 | 依赖人工理解 | 通过 rubric、schema、CI 降低口径漂移 |
-| 适合场景 | 对齐流程、培训团队 | 监控周会、异常归因、修复跟踪、KPI 审计 |
+## Quick Demo
 
-## Quick Start
-
-如果你希望整库安装并直接复用工作流，可以使用：
-
-```bash
-npx skills add veeicwgy/geo-monitor-toolkit
-```
-
-如果你只希望安装某一个技能，可以使用：
-
-```bash
-npx skills add veeicwgy/geo-monitor-toolkit -s geo-monitor
-npx skills add veeicwgy/geo-monitor-toolkit -s geo-content-check
-npx skills add veeicwgy/geo-monitor-toolkit -s geo-fix-negative
-npx skills add veeicwgy/geo-monitor-toolkit -s geo-keyword-matrix
-```
-
-如果你希望直接运行监控骨架，可以先安装依赖：
-
-```bash
-pip install -r requirements.txt
-```
-
-然后运行样例汇总与周报生成：
+最短单命令体验：
 
 ```bash
 make sample-report
-make validate
 ```
 
-## What Is Now Executable
+执行完成后，你将得到一组完整的演示产物：
 
-本仓库新增了一条最小可运行链路，使 GEO 监控可以先离线、后半自动、再逐步走向自动化。
-
-| 步骤 | 输入 | 脚本 | 输出 |
-|---|---|---|---|
-| 采集 | Query Pool + 模型配置 | `scripts/run_monitor.py` | `raw_responses.jsonl` `score_draft.jsonl` `run_manifest.json` |
-| 标注/打分 | score draft 或人工补录 annotation | `scripts/score_run.py` | `summary.json` `metrics.csv` |
-| 周报 | `summary.json` | `scripts/generate_weekly_report.py` | `weekly_report.md` |
-| 校验 | schema + 样例数据 | `scripts/validate_data.py` | 校验结果，用于本地和 CI |
-
-## Reproducible Scoring System
-
-本仓库把原来抽象的四个指标，落实成了 **0-2 离散评分系统**，再统一换算为 0-100 指标，降低不同标注人之间的漂移。
-
-| 指标 | 评分字段 | 解释 |
+| 产物 | 路径 | 作用 |
 |---|---|---|
-| 提及率 | `mention_score` | 目标产品是否被提及，以及是否是主推 |
-| 正面提及率 | `sentiment_score` | 提及后是负面、中性还是正向推荐 |
-| 能力准确率 | `capability_score` | 核心能力是否说对、是否说清边界 |
-| 生态准确率 | `ecosystem_score` | SDK、集成、上下游实体关系是否准确 |
+| Raw responses | `data/runs/sample-run/raw_responses.jsonl` | 原始回答快照 |
+| Score draft | `data/runs/sample-run/score_draft.jsonl` | 待标注与可复核打分草稿 |
+| Summary | `data/runs/sample-run/summary.json` | 结构化指标摘要 |
+| Weekly report | `data/runs/sample-run/weekly_report.md` | 可直接周会审阅的报告 |
+| Leaderboard | `data/leaderboards/model_leaderboard.md` | 模型维度指标趋势表 |
+| Visualization | `assets/leaderboard-sample.png` | 适合 README 展示的轻量证据图 |
 
-判定标准详见 `rubrics/scoring-rubric.md`，标注流程详见 `rubrics/annotation-protocol.md`。
+## Expected Output Snapshot
 
-## Data and Artifact Conventions
+下面这张图展示了跑完 sample 后会得到的轻量 leaderboard 快照：
 
-为了保证团队协作和历史可追踪性，本仓库新增了统一的数据目录和产物结构。
+![Leaderboard Snapshot](assets/leaderboard-sample.png)
 
-```text
-geo-monitor-toolkit/
-├── data/
-│   ├── query-pools/
-│   ├── runs/
-│   │   └── sample-run/
-│   └── repair-validations/
-├── rubrics/
-├── schemas/
-├── scripts/
-├── templates/
-└── .github/workflows/
+## Why v0.2.0 Matters
+
+| 维度 | v0.1 风格文档骨架 | v0.2.0 升级后 |
+|---|---|---|
+| 核心价值 | 方法论对齐 | 方法论 + 可运行演示 |
+| 结果呈现 | 文档与 SOP | Raw、summary、weekly report、leaderboard |
+| 评分一致性 | 依赖人工理解 | rubric + annotation protocol + schema |
+| 闭环能力 | 修复建议为主 | repair validation + T+7 / T+14 案例 |
+| 协作入口 | 需要口头说明 | issue templates + CONTRIBUTING |
+
+## CLI
+
+如果你不想直接调用脚本，可以使用统一 CLI：
+
+```bash
+python -m geo_monitor run --query-pool data/query-pools/mineru-example.json --model-config data/models.sample.json --out-dir data/runs/demo-run --manual-responses manual.json
+python -m geo_monitor report --input data/runs/sample-run/annotations.jsonl --output-dir data/runs/sample-run
+python -m geo_monitor leaderboard
+python -m geo_monitor validate
 ```
 
-| 目录 | 用途 |
+## Sample Run Snapshot
+
+`data/runs/sample-run/` 现在包含一份更完整的快照，用来回答“跑完后到底会得到什么”。
+
+| 文件 | 是否提供 |
 |---|---|
-| `data/query-pools/` | 不同行业与项目的 Query Pool 样例 |
-| `data/runs/` | 每次运行的原始回答、打分草稿、summary、周报 |
-| `data/repair-validations/` | 修复动作与 T+7 / T+14 跟踪记录 |
-| `schemas/` | Query Pool、run summary、repair validation 的 JSON Schema |
-| `scripts/` | 采集、打分、周报、校验脚本 |
-| `templates/` | 周报与修复验证模板 |
+| `raw_responses.jsonl` | 是 |
+| `score_draft.jsonl` | 是 |
+| `annotations.jsonl` | 是 |
+| `summary.json` | 是 |
+| `metrics.csv` | 是 |
+| `weekly_report.md` | 是 |
+| `run_manifest.json` | 本轮补充 |
 
-## Multi-Industry Examples
+## Multi-Industry Query Pools
 
-为了避免仓库只围绕 MinerU 单一案例，本次新增了三个行业样例，证明相同 schema 与 runner 可以复用到不同对象。
-
-| 类型 | 示例文件 | 说明 |
+| 类型 | 示例文件 | 场景 |
 |---|---|---|
-| Developer tool | `data/query-pools/mineru-example.json` | 文档解析 / RAG 预处理 / 复杂 PDF 场景 |
-| SaaS | `data/query-pools/posthog-saas-example.json` | 产品分析与增长类 SaaS 场景 |
-| Open-source library | `data/query-pools/fastapi-open-source-library-example.json` | Python API 框架类开源库场景 |
-| Developer tool / LLMOps | `data/query-pools/langfuse-developer-tool-example.json` | LLM 可观测性与评测工作流场景 |
+| Developer tool | `data/query-pools/mineru-example.json` | PDF 解析、RAG 预处理、复杂文档抽取 |
+| SaaS | `data/query-pools/posthog-saas-example.json` | 产品分析与增长工作流 |
+| Open-source library | `data/query-pools/fastapi-open-source-library-example.json` | Python API 框架与生态判断 |
+| Developer tool / LLMOps | `data/query-pools/langfuse-developer-tool-example.json` | LLM 可观测性与评测 |
 
-## Repair Validation Loop
+## Repair Loop Examples
 
-仓库新增了结构化修复验证对象，而不只是负向修复 SOP。团队可以把一次修复动作表示成一个实验记录，明确动作类型、目标 query、基线 run、T+7 / T+14 follow-up run 与最终结论。
+本仓库已经补充 3 个“修复动作 → T+7/T+14 指标变化”案例，用于展示 GEO 修复不是只停留在建议层，而是可以沉淀为结构化实验记录。
+
+| 文件 | 类型 |
+|---|---|
+| `data/repair-validations/mineru-error-fix-case.json` | 信息错误修复 |
+| `data/repair-validations/mineru-outdated-fix-case.json` | 过时信息修复 |
+| `data/repair-validations/mineru-competitor-fix-case.json` | 竞品植入修复 |
+
+## Collaboration
+
+如果你准备一起扩展这个仓库，可以直接使用以下入口：
 
 | 文件 | 作用 |
 |---|---|
-| `schemas/repair-validation.schema.json` | 统一 repair validation 数据结构 |
-| `templates/repair-validation.md` | 生成适合周会复盘的文本模板 |
-| `data/repair-validations/sample-repair-validation.json` | 示例化的修复验证记录 |
+| `.github/ISSUE_TEMPLATE/bug_report.md` | 提交运行或数据问题 |
+| `.github/ISSUE_TEMPLATE/feature_request.md` | 提出新功能建议 |
+| `.github/ISSUE_TEMPLATE/new_query_pool_request.md` | 请求新行业或新语言样例 |
+| `CONTRIBUTING.md` | 按模板新增一个行业样例 |
 
-## Skill Map
+## Release Notes
 
-| Skill | 用途 | 典型输入 | 典型输出 |
-|---|---|---|---|
-| `geo-keyword-matrix` | 从产品描述生成场景矩阵与 Query Pool | 产品描述、目标用户、核心能力、竞品 | 核心词/场景词/长尾词、场景矩阵、验证闭环 |
-| `geo-monitor` | 跑 Query Pool 并生成四维指标周报 | Query Pool、模型列表、回答样本 | 提及率/正面率/能力准确率/生态准确率周报 |
-| `geo-content-check` | 发布前进行 GEO 质检 | 草稿、实体定义、目标模型 | 质检分、结构缺口、引用友好性建议 |
-| `geo-fix-negative` | 识别负向类型并生成修复方案 | 负向回答、引用来源、标准事实 | 类型判断、修复动作表、回归验证计划 |
-
-## Repository Map
-
-```text
-geo-monitor-toolkit/
-├── README.md
-├── LICENSE
-├── SKILL.md
-├── manifest.json
-├── requirements.txt
-├── Makefile
-├── data/
-│   ├── models.sample.json
-│   ├── query-pools/
-│   ├── runs/
-│   └── repair-validations/
-├── rubrics/
-│   ├── scoring-rubric.md
-│   └── annotation-protocol.md
-├── schemas/
-│   ├── query-pool.schema.json
-│   ├── run-results.schema.json
-│   └── repair-validation.schema.json
-├── scripts/
-│   ├── run_monitor.py
-│   ├── score_run.py
-│   ├── generate_weekly_report.py
-│   └── validate_data.py
-├── templates/
-│   ├── weekly-report.md
-│   └── repair-validation.md
-├── playbooks/
-├── examples/
-└── skills/
-```
-
-## Recommended Adoption Order
-
-| 周期 | 重点动作 | 目标 |
-|---|---|---|
-| 第 1 周 | 建关键词矩阵、整理 Query Pool、确认模型清单与 rubric | 建好监控地基 |
-| 第 2 周 | 跑首轮 sample run、产出周报、校准评分偏差 | 建立基线 |
-| 第 3-4 周 | 执行内容铺设与负向修复动作 | 把动作写入 repair validation |
-| 第 5 周起 | 做 T+7 / T+14 回归并比较 summary 变化 | 建立闭环证明 |
-
-## Current Boundary
-
-本仓库已经补齐了 **最小可运行骨架**，但仍然刻意保持轻量：它更适合做统一监控结构、评分与复盘，而不是直接替代完整的 GEO SaaS 产品。对于未开放 API 的模型，推荐先用人工复制回答或自建采集层，再接入这里的 schema、rubric 与报告流水线。
+当前推荐版本是 **v0.2.0**。版本说明见 `CHANGELOG.md` 与 `release-notes/v0.2.0.md`。
 
 ## References
 
