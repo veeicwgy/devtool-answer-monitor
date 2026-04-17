@@ -20,13 +20,13 @@
 如果用户已经在使用现成的通用技能库，建议把本仓库作为垂直扩展层单独安装。这样不会破坏原有工作流，同时便于后续升级。
 
 ```bash
-npx skills add <your-org>/geo-monitor-toolkit
+npx skills add veeicwgy/geo-monitor-toolkit
 ```
 
 如果只需要其中一个能力，也可以按单技能安装：
 
 ```bash
-npx skills add <your-org>/geo-monitor-toolkit -s geo-monitor
+npx skills add veeicwgy/geo-monitor-toolkit -s geo-monitor
 ```
 
 ## OpenClaw / ClawHub 路径
