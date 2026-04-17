@@ -19,7 +19,34 @@ Use this skill when the user already has, or is ready to create, a Query Pool an
 
 ## Quick Start
 
-Collect or create the following inputs:
+### Choose the right runner
+
+| Runner | API Type | Works with | Use when |
+|---|---|---|---|
+| `scripts/run_monitor.py` | Responses API | OpenAI models only | GPT-4o, GPT-4.1 and variants |
+| `scripts/run_chat_completions.py` | Chat Completions API | Any OpenAI-compatible provider | Claude, Gemini, DeepSeek, Qwen, MiniMax, GLM, or any gateway |
+
+**For multi-model coverage across providers, always use `run_chat_completions.py`.**
+
+```bash
+export OPENAI_API_KEY=<your-key>
+export OPENAI_BASE_URL=<gateway-url>   # omit to use OpenAI directly
+
+python scripts/run_chat_completions.py \
+    --query-pool  data/query-pools/mineru-example.json \
+    --model-config data/models.sample.json \
+    --out-dir data/runs/my-run
+```
+
+Then annotate scores and generate the report:
+
+```bash
+python -m geo_monitor report \
+    --input data/runs/my-run/raw_responses.jsonl \
+    --output-dir data/runs/my-run
+```
+
+### Collect or create the following inputs:
 
 | Input | Description |
 |---|---|

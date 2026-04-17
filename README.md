@@ -25,7 +25,39 @@
 |---|---|---|---|
 | 离线样本重放 | `data/runs/sample-run/annotations.jsonl` | `summary.json`、`weekly_report.md`、leaderboard | 先理解报告生成链路 |
 | 手工粘贴回答 | Query Pool + `data/manual.sample.json` | `raw_responses.jsonl`、`score_draft.jsonl` | 没有 API key 时演示从 query 到草稿的闭环 |
-| API 采集 | Query Pool + `data/models.sample.json` + key | `raw_responses.jsonl`、`score_draft.jsonl`、后续 summary/report | 真正做批量 GEO 监控 |
+| API 采集（单 provider） | Query Pool + `data/models.sample.json` + key | `raw_responses.jsonl`、后续 summary/report | OpenAI 模型，使用 `run_monitor.py` |
+| **API 采集（多 provider）** | Query Pool + `data/models.sample.json` + key | `raw_responses.jsonl`、后续 summary/report | **Claude / Gemini / DeepSeek / Qwen / MiniMax / GLM 等，使用 `run_chat_completions.py`** |
+
+## Multi-Provider API Collection
+
+`run_chat_completions.py` 使用通用的 Chat Completions 接口，兼容所有 OpenAI-compatible 网关，可以同时采集多个 AI 厂商的回答：
+
+```bash
+export OPENAI_API_KEY=<your-key>
+export OPENAI_BASE_URL=<your-gateway-url>  # 如 http://your-gateway/v1
+
+python scripts/run_chat_completions.py \
+    --query-pool  data/query-pools/mineru-example.json \
+    --model-config data/models.sample.json \
+    --out-dir data/runs/multi-provider-run
+
+# 标注打分后生成报告
+python -m geo_monitor report \
+    --input data/runs/multi-provider-run/raw_responses.jsonl \
+    --output-dir data/runs/multi-provider-run
+```
+
+在 `data/models.sample.json` 中将需要的模型 `enabled` 设为 `true`，支持的模型示例：
+
+| 模型 | api_model 字段 | 说明 |
+|---|---|---|
+| GPT-4o | `gpt-4o` | OpenAI 原生 |
+| Claude Sonnet | `claude-sonnet-4-6` | 需通过兼容网关 |
+| Gemini 2.5 Flash | `gemini-2.5-flash` | 需通过兼容网关 |
+| DeepSeek V3 | `deepseek-v3-250324` | 需通过兼容网关 |
+| Qwen Max | `qwen-max` | 需通过兼容网关 |
+| MiniMax M2 | `minimax/minimax-m2` | 需通过兼容网关 |
+| GLM-5 | `glm-5` | 需通过兼容网关 |
 
 ## Minimal Files You Can Start From
 
