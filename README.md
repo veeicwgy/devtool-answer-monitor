@@ -4,28 +4,48 @@
 ![Release](https://img.shields.io/github/v/release/veeicwgy/geo-monitor-toolkit)
 ![Python](https://img.shields.io/badge/python-3.11-blue)
 
-**GEO Monitor Toolkit** 是一套面向 **开发者工具、API、SDK 与开源项目** 的 GEO（Generative Engine Optimization）监控与内容优化工具包。它现在不仅提供 playbook，也提供 **可运行 runner、可复现评分 rubric、结构化 schema、CLI、leaderboard、repair loop 样例和 sample run 快照**，帮助团队把 `关键词研究 → 监控 → 打分 → 周报 → 修复 → 回归验证` 串成一条能演示、能协作、能复盘的工作流。
+> **GEO monitoring operating system for dev tools**
 
-本仓库继续以 **MinerU** 作为主案例，并扩展到 SaaS、开源库和开发者工具多类 Query Pool。整体组织方式参考了可安装 Skill 仓库与 GEO 内容工作流项目。[1] [2] [3]
+**GEO Monitor Toolkit** 是一套面向 **开发者工具、API、SDK 与开源项目** 的 GEO（Generative Engine Optimization）监控与修复中台工具包。它不仅提供 playbook，也提供 **可运行 runner、可复现评分 rubric、结构化 schema、CLI、leaderboard、repair loop 样例和 sample run 快照**，帮助团队把 `关键词研究 → 监控 → 打分 → 周报 → 修复 → 回归验证` 串成一条能演示、能协作、能复盘的工作流。本仓库继续以 **MinerU** 作为主案例，并扩展到 SaaS、开源库和开发者工具多类 Query Pool。[1] [2] [3]
 
 ## Quick Demo
 
-最短单命令体验：
+如果你只想最快看见“跑完会得到什么”，推荐从下面两个命令开始。
+
+| 命令 | 类型 | 你会看到什么 |
+|---|---|---|
+| `make sample-report` | **离线样本重放** | 基于仓库内现成 `annotations.jsonl` 生成 `summary.json`、`weekly_report.md` 与 leaderboard |
+| `make run-demo` | **手工模式演示** | 基于仓库内 `manual.sample.json` 生成 `raw_responses.jsonl` 与 `score_draft.jsonl` |
+
+请注意，**`make sample-report` 是基于现成样本重放，不是全自动采集**。它的作用是让新访客快速理解评分、汇总与周报生成链路，而不是替代真实采集。
+
+## Three Runtime Modes
+
+| 模式 | 输入 | 输出 | 适用场景 |
+|---|---|---|---|
+| 离线样本重放 | `data/runs/sample-run/annotations.jsonl` | `summary.json`、`weekly_report.md`、leaderboard | 先理解报告生成链路 |
+| 手工粘贴回答 | Query Pool + `data/manual.sample.json` | `raw_responses.jsonl`、`score_draft.jsonl` | 没有 API key 时演示从 query 到草稿的闭环 |
+| API 采集 | Query Pool + `data/models.sample.json` + key | `raw_responses.jsonl`、`score_draft.jsonl`、后续 summary/report | 真正做批量 GEO 监控 |
+
+## Minimal Files You Can Start From
+
+| 文件 | 作用 |
+|---|---|
+| [`data/models.sample.json`](data/models.sample.json) | 最小模型配置样例 |
+| [`data/manual.sample.json`](data/manual.sample.json) | 最小手工回答样例 |
+| [`docs/metric-definition.md`](docs/metric-definition.md) | 指标口径说明页，解释 0-2 打分与 KPI 映射 |
+| [`data/query-pools/mineru-example.json`](data/query-pools/mineru-example.json) | 默认 run-demo 使用的 Query Pool |
+
+## CLI
+
+如果你不想直接调用脚本，可以使用统一 CLI：
 
 ```bash
-make sample-report
+python -m geo_monitor run --query-pool data/query-pools/mineru-example.json --model-config data/models.sample.json --out-dir data/runs/demo-run --manual-responses data/manual.sample.json
+python -m geo_monitor report --input data/runs/sample-run/annotations.jsonl --output-dir data/runs/sample-run
+python -m geo_monitor leaderboard
+python -m geo_monitor validate
 ```
-
-执行完成后，你将得到一组完整的演示产物：
-
-| 产物 | 路径 | 作用 |
-|---|---|---|
-| Raw responses | `data/runs/sample-run/raw_responses.jsonl` | 原始回答快照 |
-| Score draft | `data/runs/sample-run/score_draft.jsonl` | 待标注与可复核打分草稿 |
-| Summary | `data/runs/sample-run/summary.json` | 结构化指标摘要 |
-| Weekly report | `data/runs/sample-run/weekly_report.md` | 可直接周会审阅的报告 |
-| Leaderboard | `data/leaderboards/model_leaderboard.md` | 模型维度指标趋势表 |
-| Visualization | `assets/leaderboard-sample.png` | 适合 README 展示的轻量证据图 |
 
 ## Expected Output Snapshot
 
@@ -33,26 +53,9 @@ make sample-report
 
 ![Leaderboard Snapshot](assets/leaderboard-sample.png)
 
-## Why v0.2.0 Matters
+下面这张图展示了修复动作落地后，从 baseline 到 `T+7 / T+14` 的指标改善趋势：
 
-| 维度 | v0.1 风格文档骨架 | v0.2.0 升级后 |
-|---|---|---|
-| 核心价值 | 方法论对齐 | 方法论 + 可运行演示 |
-| 结果呈现 | 文档与 SOP | Raw、summary、weekly report、leaderboard |
-| 评分一致性 | 依赖人工理解 | rubric + annotation protocol + schema |
-| 闭环能力 | 修复建议为主 | repair validation + T+7 / T+14 案例 |
-| 协作入口 | 需要口头说明 | issue templates + CONTRIBUTING |
-
-## CLI
-
-如果你不想直接调用脚本，可以使用统一 CLI：
-
-```bash
-python -m geo_monitor run --query-pool data/query-pools/mineru-example.json --model-config data/models.sample.json --out-dir data/runs/demo-run --manual-responses manual.json
-python -m geo_monitor report --input data/runs/sample-run/annotations.jsonl --output-dir data/runs/sample-run
-python -m geo_monitor leaderboard
-python -m geo_monitor validate
-```
+![Repair Trend Snapshot](assets/repair-trend-sample.png)
 
 ## Sample Run Snapshot
 
@@ -66,7 +69,7 @@ python -m geo_monitor validate
 | `summary.json` | 是 |
 | `metrics.csv` | 是 |
 | `weekly_report.md` | 是 |
-| `run_manifest.json` | 本轮补充 |
+| `run_manifest.json` | 是 |
 
 ## Multi-Industry Query Pools
 
@@ -87,6 +90,15 @@ python -m geo_monitor validate
 | `data/repair-validations/mineru-outdated-fix-case.json` | 过时信息修复 |
 | `data/repair-validations/mineru-competitor-fix-case.json` | 竞品植入修复 |
 
+## Benchmark and Reader Guide
+
+如果你要向团队解释“不同项目如何横向比较”或“非工程同学如何读周报”，可以直接从以下入口开始。
+
+| 文件 | 作用 |
+|---|---|
+| [`benchmark/README.md`](benchmark/README.md) | 同类 Query Pool 的横向 benchmark 范式 |
+| [`notebooks/README.md`](notebooks/README.md) | 非工程同学的阅读路径说明 |
+
 ## Collaboration
 
 如果你准备一起扩展这个仓库，可以直接使用以下入口：
@@ -101,6 +113,10 @@ python -m geo_monitor validate
 ## Release Notes
 
 当前推荐版本是 **v0.2.0**。版本说明见 `CHANGELOG.md` 与 `release-notes/v0.2.0.md`。
+
+## CI Badge Note
+
+当前顶部使用的是静态 **PyCI** 徽章。等 `.github/workflows/ci.yml` 成功进入远端仓库后，可以切换为真实 GitHub Actions 状态徽章，以反映 `make validate`、样例 run 检查和 schema 校验结果。
 
 ## References
 

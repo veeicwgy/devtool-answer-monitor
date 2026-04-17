@@ -1,4 +1,4 @@
-.PHONY: validate sample-report leaderboard quick-demo
+.PHONY: validate sample-report run-demo leaderboard quick-demo
 
 validate:
 	python3 scripts/validate_data.py --repo-root .
@@ -8,7 +8,11 @@ sample-report:
 	python3 scripts/generate_weekly_report.py --summary data/runs/sample-run/summary.json --output data/runs/sample-run/weekly_report.md
 	python3 scripts/build_leaderboard.py --runs-root data/runs --output-dir data/leaderboards --image-output assets/leaderboard-sample.png
 
+run-demo:
+	python3 -m geo_monitor run --query-pool data/query-pools/mineru-example.json --model-config data/models.sample.json --out-dir data/runs/demo-run --manual-responses data/manual.sample.json
+
 leaderboard:
 	python3 scripts/build_leaderboard.py --runs-root data/runs --output-dir data/leaderboards --image-output assets/leaderboard-sample.png
+	python3 scripts/build_repair_trend.py
 
-quick-demo: sample-report validate
+quick-demo: run-demo sample-report validate
