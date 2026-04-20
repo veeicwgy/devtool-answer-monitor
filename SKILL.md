@@ -1,7 +1,7 @@
 ---
 name: geo-monitor-toolkit
 description: >
-  Use when the user wants a GEO monitoring operating system for a developer tool, API, SDK, or open-source project. Covers keyword matrix and Query Pool design, four-metric monitoring, model-specific content placement, GEO content checks, negative-answer repair, and T+7 or T+14 regression validation.
+  Use when the user wants to monitor how ChatGPT, Claude, Gemini, and other LLMs describe a developer tool, API, SDK, or open-source project. GEO Monitor Toolkit is the companion skill for the geo-monitor-toolkit repo and covers query pool design, four-metric monitoring, model-specific content placement, GEO content checks, negative-answer repair, and T+7 or T+14 regression validation.
 license: MIT
 allowed-tools: Read, Write, Edit, Bash
 metadata:
@@ -11,9 +11,43 @@ metadata:
     homepage: "https://github.com/veeicwgy/geo-monitor-toolkit"
 ---
 
-# geo-monitor-toolkit
+# Monitor How LLMs Describe Your Dev Tool
 
 Use this skill as the **main GEO workflow router** for developer tools and open-source products.
+
+**Brand:** GEO Monitor Toolkit
+
+**Companion repo:** [`geo-monitor-toolkit`](https://github.com/veeicwgy/geo-monitor-toolkit)
+
+Use this when you want an agent to help you monitor how LLMs describe your product, build a GEO query pool, diagnose negative or outdated answers, and plan what to fix next.
+
+## Start Here
+
+Copy one of these prompts to begin:
+
+- `Analyze how ChatGPT and Claude describe my API docs`
+- `Build a GEO query pool for my SDK`
+- `Find negative or outdated LLM claims about my project`
+
+## 30-Second Result
+
+**Typical input**
+
+- product truth such as a README, docs, changelog, integrations, or positioning page
+- GEO evidence such as copied model answers, screenshots, or cited URLs
+- scope such as target models, languages, regions, or a repeated query set
+
+**What this skill returns**
+
+- a reusable query pool
+- raw evidence and a score draft plan
+- a monitoring summary and report outline
+- a repair backlog with T+7 or T+14 validation points
+
+**Companion demo and sample outputs**
+
+- Quick demo: [repo quick demo](https://github.com/veeicwgy/geo-monitor-toolkit/tree/codex/update-readme-hero#quick-demo)
+- Sample outputs: [leaderboard snapshot](https://github.com/veeicwgy/geo-monitor-toolkit/blob/codex/update-readme-hero/assets/leaderboard-sample.png) and [repair trend snapshot](https://github.com/veeicwgy/geo-monitor-toolkit/blob/codex/update-readme-hero/assets/repair-trend-sample.png)
 
 ## Trigger
 
@@ -81,6 +115,13 @@ Always preserve the following outputs.
 | Monitoring outputs | raw evidence, score draft, summary, report, leaderboard or overview |
 | GEO action plan | content placement priorities and repair backlog |
 | Regression record | T+7 and T+14 comparisons after key fixes |
+
+## Positioning
+
+GEO Monitor Toolkit is the skill layer for the `geo-monitor-toolkit` repo.
+
+- Use the **repo** when you want runnable demos, scripts, and report artifacts.
+- Use the **skill** when you want an agent-guided workflow for monitoring, repair, and regression planning.
 
 ## Handoff Rules
 

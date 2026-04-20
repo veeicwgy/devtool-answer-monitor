@@ -1,6 +1,6 @@
 # Getting Started with GEO Monitor Toolkit
 
-**GEO Monitor Toolkit** 是一个面向 **开发者工具、API、SDK 与开源项目** 的 **GEO Monitoring OS**。它的重点不是通用营销文案生成，而是把 **Query Pool、LLM answer monitoring、四指标打分、repair loop、T+7/T+14 回归验证** 串成可复现的团队工作流。
+**GEO Monitor Toolkit** 是一个面向 **开发者工具、API、SDK 与开源项目** 的 GEO 监控工具包。它的重点不是通用营销文案生成，而是把 **Query Pool、LLM answer monitoring、四指标打分、repair loop、T+7/T+14 回归验证** 串成可复现的团队工作流。
 
 ## What You Can Do in the First 30 Seconds
 
@@ -97,3 +97,6 @@ bash quickstart.sh
 > **GEO Monitoring OS for Developer Tools**
 >
 > 它关注的是 **监控、打分、修复与回归验证**，而不是泛化的营销内容生成。
+>
+> 如果你更想直接进入 agent workflow，可以安装配套的 ClawHub skill：
+> [geo-monitor-os-skill](https://clawhub.ai/veeicwgy/geo-monitor-os-skill)

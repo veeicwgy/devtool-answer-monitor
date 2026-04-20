@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- Refined the root skill and repository messaging around the GEO Monitor Toolkit brand.
+- Updated the skill title to a more direct user-facing promise for ClawHub discovery.
+- Added copyable starter prompts, a 30-second result section, and cross-links between the repo and the companion ClawHub skill.
+
 ## v0.2.0
 
 ### Added

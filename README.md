@@ -7,7 +7,14 @@
 ![Python](https://img.shields.io/badge/python-3.11-blue)
 ![License](https://img.shields.io/github/license/veeicwgy/geo-monitor-toolkit)
 
+Prefer agent workflow? Install the [ClawHub skill](https://clawhub.ai/veeicwgy/geo-monitor-os-skill).
+
 GEO Monitor Toolkit is an open-source workflow for **AI visibility monitoring**.
+
+It pairs:
+
+- the **`geo-monitor-toolkit` repo** for runnable demos, artifacts, and reporting scripts
+- the **GEO Monitor Toolkit skill on ClawHub** for agent-guided monitoring, query-pool design, and repair workflows
 
 It helps developer tools teams answer questions like:
 
@@ -17,6 +24,19 @@ It helps developer tools teams answer questions like:
 - After we update docs, changelogs, landing pages, or case studies, do model answers actually improve?
 
 Unlike generic GEO or SEO content tools, this repository focuses on **measurement, repair, and regression tracking**.
+
+## Try The Skill
+
+If you want the agent workflow instead of starting with the CLI, install the companion skill on ClawHub and start with one of these prompts:
+
+- `Analyze how ChatGPT and Claude describe my API docs`
+- `Build a GEO query pool for my SDK`
+- `Find negative or outdated LLM claims about my project`
+
+The ClawHub skill is the companion agent layer for this repository:
+
+- Skill page: [geo-monitor-os-skill on ClawHub](https://clawhub.ai/veeicwgy/geo-monitor-os-skill)
+- Repo demo and outputs: [README quick demo](https://github.com/veeicwgy/geo-monitor-toolkit/tree/codex/update-readme-hero#quick-demo)
 
 ## Why This Exists
 
@@ -76,6 +96,41 @@ After it runs, you should see outputs like:
 - `data/runs/sample-run/weekly_report.md`
 - `assets/leaderboard-sample.png`
 - `assets/repair-trend-sample.png`
+
+## 30-Second Result
+
+If you want to know what this toolkit produces before reading deeper, here is the fastest path:
+
+**Input**
+
+- a query pool such as `data/query-pools/mineru-example.json`
+- a model config such as `data/models.multi.sample.json`
+- manual sample answers or live API responses
+
+**Command**
+
+```bash
+bash quickstart.sh
+```
+
+**Output**
+
+- `data/runs/quickstart-run/raw_responses.jsonl`
+- `data/runs/quickstart-run/score_draft.jsonl`
+- `data/runs/quickstart-run/run_manifest.json`
+- `data/runs/sample-run/summary.json`
+- `data/runs/sample-run/weekly_report.md`
+- `assets/leaderboard-sample.png`
+- `assets/repair-trend-sample.png`
+
+**Artifacts you can hand to a team**
+
+- a reusable query pool
+- raw model evidence
+- a draft scoring layer for review
+- a weekly report
+- a leaderboard snapshot
+- a repair trend snapshot
 
 ## Example Outputs
 
@@ -168,6 +223,7 @@ Then score and report after annotation.
 - Example case: [`examples/mineru-case-study.md`](examples/mineru-case-study.md)
 - Weekly report template: [`templates/weekly-report.md`](templates/weekly-report.md)
 - Repair validation template: [`templates/repair-validation.md`](templates/repair-validation.md)
+- Companion skill: [ClawHub skill page](https://clawhub.ai/veeicwgy/geo-monitor-os-skill)
 
 ## Positioning
 
