@@ -61,6 +61,7 @@ This project gives teams a reproducible way to track that.
   - positive mention rate
   - capability accuracy
   - ecosystem accuracy
+- Summary and weekly report slices by model and funnel stage
 - Repair workflow for outdated, negative, or competitor-biased answers
 - T+7 / T+14 regression validation
 - Weekly report and leaderboard outputs for team review

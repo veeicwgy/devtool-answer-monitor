@@ -20,6 +20,10 @@
 
 {by_model_table}
 
+## By Funnel Stage
+
+{by_funnel_stage_table}
+
 ## Top Repair Candidates
 
 {repair_table}

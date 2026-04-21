@@ -18,9 +18,44 @@
   "by_model": [
     {
       "model_id": "gpt-4.1-mini",
+      "record_count": 5,
       "mention_rate": 80.0,
       "positive_mention_rate": 70.0,
       "capability_accuracy": 100.0,
+      "ecosystem_accuracy": 50.0
+    }
+  ],
+  "by_funnel_stage": [
+    {
+      "funnel_stage": "awareness",
+      "record_count": 1,
+      "mention_rate": 100.0,
+      "positive_mention_rate": 100.0,
+      "capability_accuracy": null,
+      "ecosystem_accuracy": null
+    },
+    {
+      "funnel_stage": "selection",
+      "record_count": 2,
+      "mention_rate": 75.0,
+      "positive_mention_rate": 75.0,
+      "capability_accuracy": 100.0,
+      "ecosystem_accuracy": null
+    },
+    {
+      "funnel_stage": "activation",
+      "record_count": 1,
+      "mention_rate": 100.0,
+      "positive_mention_rate": 50.0,
+      "capability_accuracy": null,
+      "ecosystem_accuracy": null
+    },
+    {
+      "funnel_stage": "agent",
+      "record_count": 1,
+      "mention_rate": 50.0,
+      "positive_mention_rate": 50.0,
+      "capability_accuracy": null,
       "ecosystem_accuracy": 50.0
     }
   ],

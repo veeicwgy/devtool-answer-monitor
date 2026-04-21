@@ -12,6 +12,7 @@ METRIC_MAP = {
     "capability_accuracy": ("capability_score", lambda r: r.get("query_type") == "capability"),
     "ecosystem_accuracy": ("ecosystem_score", lambda r: r.get("query_type") == "ecosystem"),
 }
+FUNNEL_STAGE_ORDER = ["awareness", "selection", "integration", "activation", "agent"]
 
 
 def load_jsonl(path):
@@ -38,6 +39,16 @@ def strict_rate(rows, score_field, predicate):
     return round(sum(1 for v in vals if v == 2) / len(vals) * 100, 2)
 
 
+def build_metric_entry(label_key, label_value, rows):
+    entry = {
+        label_key: label_value,
+        "record_count": len(rows),
+    }
+    for metric, (score_field, predicate) in METRIC_MAP.items():
+        entry[metric] = compute_metric(rows, score_field, predicate)
+    return entry
+
+
 def build_summary(rows):
     first = rows[0]
     summary = {
@@ -48,6 +59,7 @@ def build_summary(rows):
         "metrics": {},
         "strict_rates": {},
         "by_model": [],
+        "by_funnel_stage": [],
         "repair_candidates": [],
     }
     for metric, (score_field, predicate) in METRIC_MAP.items():
@@ -57,11 +69,19 @@ def build_summary(rows):
     by_model = defaultdict(list)
     for row in rows:
         by_model[row["model_id"]].append(row)
-    for model_id, model_rows in by_model.items():
-        entry = {"model_id": model_id}
-        for metric, (score_field, predicate) in METRIC_MAP.items():
-            entry[metric] = compute_metric(model_rows, score_field, predicate)
-        summary["by_model"].append(entry)
+    for model_id, model_rows in sorted(by_model.items()):
+        summary["by_model"].append(build_metric_entry("model_id", model_id, model_rows))
+
+    by_funnel_stage = defaultdict(list)
+    for row in rows:
+        stage = row.get("funnel_stage")
+        if stage:
+            by_funnel_stage[stage].append(row)
+
+    for stage in FUNNEL_STAGE_ORDER:
+        stage_rows = by_funnel_stage.get(stage)
+        if stage_rows:
+            summary["by_funnel_stage"].append(build_metric_entry("funnel_stage", stage, stage_rows))
 
     for row in rows:
         if row.get("needs_repair"):
@@ -76,13 +96,15 @@ def build_summary(rows):
 
 
 def write_metrics_csv(summary, path):
-    fields = ["scope", "name", "mention_rate", "positive_mention_rate", "capability_accuracy", "ecosystem_accuracy"]
+    fields = ["scope", "name", "record_count", "mention_rate", "positive_mention_rate", "capability_accuracy", "ecosystem_accuracy"]
     with open(path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
-        writer.writerow({"scope": "overall", "name": summary["project"], **summary["metrics"]})
+        writer.writerow({"scope": "overall", "name": summary["project"], "record_count": summary["record_count"], **summary["metrics"]})
         for row in summary["by_model"]:
             writer.writerow({"scope": "model", "name": row["model_id"], **{k: row[k] for k in fields[2:]}})
+        for row in summary.get("by_funnel_stage", []):
+            writer.writerow({"scope": "funnel_stage", "name": row["funnel_stage"], **{k: row[k] for k in fields[2:]}})
 
 
 def main():

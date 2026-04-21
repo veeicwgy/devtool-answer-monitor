@@ -22,6 +22,15 @@
 |---|---:|---:|---:|---:|
 | gpt-4.1-mini | 80.00 | 70.00 | 100.00 | 50.00 |
 
+## By Funnel Stage
+
+| Funnel Stage | Records | Mention | Positive | Capability | Ecosystem |
+|---|---:|---:|---:|---:|---:|
+| awareness | 1 | 100.00 | 100.00 | NA | NA |
+| selection | 2 | 75.00 | 75.00 | 100.00 | NA |
+| activation | 1 | 100.00 | 50.00 | NA | NA |
+| agent | 1 | 50.00 | 50.00 | NA | 50.00 |
+
 ## Top Repair Candidates
 
 | Query ID | Model | Repair Type |
