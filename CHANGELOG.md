@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v0.2.3
+
+### Changed
+- Replaced the old logo asset with a new AI Visibility Toolkit wordmark in both SVG and PNG formats.
+- Restored the logo to the top of the English and Chinese README files so the new public brand is visible at first glance.
+
 ## v0.2.2
 
 ### Changed
