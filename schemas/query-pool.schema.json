@@ -18,7 +18,10 @@
           "type": {"enum": ["brand", "capability", "ecosystem", "competitor", "negative"]},
           "language": {"type": "string"},
           "priority": {"enum": ["P0", "P1", "P2"]},
-          "query": {"type": "string"}
+          "query": {"type": "string"},
+          "funnel_stage": {"enum": ["awareness", "selection", "integration", "activation", "agent"]},
+          "target_surface": {"type": "string"},
+          "desired_action": {"type": "string"}
         }
       }
     }

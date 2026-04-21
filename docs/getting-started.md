@@ -1,6 +1,6 @@
 # Getting Started with GEO Monitor Toolkit
 
-**GEO Monitor Toolkit** 是一个面向 **开发者工具、API、SDK 与开源项目** 的 **GEO Monitoring OS**。它的重点不是通用营销文案生成，而是把 **Query Pool、LLM answer monitoring、四指标打分、repair loop、T+7/T+14 回归验证** 串成可复现的团队工作流。
+**GEO Monitor Toolkit** 是一个面向 **开发者工具、API、SDK 与开源项目** 的 GEO 监控工具包。它的重点不是通用营销文案生成，而是把 **Query Pool、LLM answer monitoring、四指标打分、repair loop、activation 分析、T+7/T+14 回归验证** 串成可复现的团队工作流。
 
 ## Read This First
 
@@ -26,10 +26,11 @@ bash quickstart.sh
 | Score draft | `data/runs/quickstart-run/score_draft.jsonl` | 进入人工标注与复核前的草稿层 |
 | Run manifest | `data/runs/quickstart-run/run_manifest.json` | 保留本次 run 的输入与记录数 |
 | Weekly report | `data/runs/sample-run/weekly_report.md` | 快速理解可交付给团队的周报长什么样 |
+| Sciverse sample summary | `data/runs/sciverse-sample-run/summary.json` | 查看 scientific API 场景下的 funnel-stage 切片 |
 | Leaderboard snapshot | `assets/leaderboard-sample.png` | 查看默认多模型对比快照 |
 | Repair trend snapshot | `assets/repair-trend-sample.png` | 查看修复动作后的时间序列改善 |
 
-> 这里的 `quickstart-run` 是当前命令新生成的原始证据；`weekly_report.md` 与两张图则是基于仓库样例摘要重放得到的展示快照，用于降低首次理解成本。
+> 这里的 `quickstart-run` 是当前命令新生成的原始证据；`weekly_report.md` 和 `sciverse-sample-run` 则是仓库内置样板，用来降低首次理解成本。
 
 ## Which Entry Should You Use
 
@@ -39,6 +40,7 @@ bash quickstart.sh
 | Doctor | `make doctor` | 先检查环境、样例文件和目录是否完整 |
 | Quickstart | `bash quickstart.sh` | 首次体验、30 秒看懂产物、零 API 成本演示 |
 | Make target | `make quickstart` | 已熟悉 Make 工作流的团队 |
+| Sciverse sample report | `make sample-report-sciverse` | 直接重建 scientific API 样板的 summary 与周报 |
 | CLI | `python -m geo_monitor ...` | 接入自己的 Query Pool、模型配置与运行目录 |
 
 ## Default Runtime Modes
@@ -54,10 +56,24 @@ bash quickstart.sh
 | File | Purpose |
 |---|---|
 | `data/query-pools/mineru-example.json` | 默认开发者工具 Query Pool 示例 |
+| `data/query-pools/sciverse-api-integration-example.json` | scientific API / agent workflow Query Pool 示例 |
+| `data/runs/sample-run/weekly_report.md` | complete developer-tool weekly report 示例 |
+| `data/runs/sciverse-sample-run/weekly_report.md` | complete scientific API weekly report 示例 |
 | `data/models.sample.json` | 最小单模型配置 |
 | `data/models.multi.sample.json` | 默认多模型演示配置 |
 | `data/manual.sample.json` | 最小手工回答样例 |
 | `data/manual.multi.sample.json` | 多模型手工回答样例 |
+
+## Start By Goal
+
+如果你不是只想“看一个 demo”，而是想把 GEO 用在真实增长目标上，可以按目标选择入口。
+
+| Goal | First file to open | Why |
+|---|---|---|
+| 提高模型提及和推荐质量 | `docs/metric-definition.md` | 先把 4 个核心指标跑通 |
+| 提高下载和安装 | `docs/activation-metrics.md` | 把“提及”延伸到“可执行下一步” |
+| 提高 API 调用和 agent 调用 | `playbooks/agent-readiness.md` | 先修最影响调用成功率的 surfaces |
+| 面向 MinerU / Sciverse / scientific discovery | `playbooks/scientific-product-geo.md` | 直接使用 scientific product 的场景框架 |
 
 ## Recommended Team Workflow
 
@@ -84,10 +100,28 @@ bash quickstart.sh
 
 如果你需要的是通用内容生成器、SEO 博文写手或品牌口号生成器，这个仓库并不是最优入口。
 
+## Read Next
+
+| Topic | Path |
+|---|---|
+| Metric definition | `docs/metric-definition.md` |
+| Activation metrics | `docs/activation-metrics.md` |
+| Agent readiness | `playbooks/agent-readiness.md` |
+| Surface priority | `playbooks/developer-tool-surface-priority.md` |
+| Scientific product GEO | `playbooks/scientific-product-geo.md` |
+| Benchmark method | `benchmark/README.md` |
+| Notebook / reader guide | `notebooks/README.md` |
+| Repair template | `templates/repair-validation.md` |
+| Weekly report template | `templates/weekly-report.md` |
+| Release notes | `release-notes/v0.2.0.md` |
+
 ## Positioning
 
 请把这个仓库理解为：
 
 > **GEO Monitoring OS for Developer Tools**
 >
-> 它关注的是 **监控、打分、修复与回归验证**，而不是泛化的营销内容生成。
+> 它关注的是 **监控、打分、修复、activation 与回归验证**，而不是泛化的营销内容生成。
+>
+> 如果你更想直接进入 agent workflow，可以安装配套的 ClawHub skill：
+> [geo-monitor-os-skill](https://clawhub.ai/veeicwgy/geo-monitor-os-skill)

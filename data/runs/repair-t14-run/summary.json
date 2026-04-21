@@ -18,6 +18,7 @@
   "by_model": [
     {
       "model_id": "gpt-4.1-mini",
+      "record_count": 5,
       "mention_rate": 90.0,
       "positive_mention_rate": 82.0,
       "capability_accuracy": 100.0,

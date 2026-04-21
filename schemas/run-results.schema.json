@@ -12,23 +12,39 @@
       "type": "object",
       "required": ["mention_rate", "positive_mention_rate", "capability_accuracy", "ecosystem_accuracy"],
       "properties": {
-        "mention_rate": {"type": "number"},
-        "positive_mention_rate": {"type": "number"},
-        "capability_accuracy": {"type": "number"},
-        "ecosystem_accuracy": {"type": "number"}
+        "mention_rate": {"type": ["number", "null"]},
+        "positive_mention_rate": {"type": ["number", "null"]},
+        "capability_accuracy": {"type": ["number", "null"]},
+        "ecosystem_accuracy": {"type": ["number", "null"]}
       }
     },
     "by_model": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["model_id", "mention_rate", "positive_mention_rate", "capability_accuracy", "ecosystem_accuracy"],
+        "required": ["model_id", "record_count", "mention_rate", "positive_mention_rate", "capability_accuracy", "ecosystem_accuracy"],
         "properties": {
           "model_id": {"type": "string"},
-          "mention_rate": {"type": "number"},
-          "positive_mention_rate": {"type": "number"},
-          "capability_accuracy": {"type": "number"},
-          "ecosystem_accuracy": {"type": "number"}
+          "record_count": {"type": "integer"},
+          "mention_rate": {"type": ["number", "null"]},
+          "positive_mention_rate": {"type": ["number", "null"]},
+          "capability_accuracy": {"type": ["number", "null"]},
+          "ecosystem_accuracy": {"type": ["number", "null"]}
+        }
+      }
+    },
+    "by_funnel_stage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["funnel_stage", "record_count", "mention_rate", "positive_mention_rate", "capability_accuracy", "ecosystem_accuracy"],
+        "properties": {
+          "funnel_stage": {"type": "string"},
+          "record_count": {"type": "integer"},
+          "mention_rate": {"type": ["number", "null"]},
+          "positive_mention_rate": {"type": ["number", "null"]},
+          "capability_accuracy": {"type": ["number", "null"]},
+          "ecosystem_accuracy": {"type": ["number", "null"]}
         }
       }
     }

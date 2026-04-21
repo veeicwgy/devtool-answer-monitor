@@ -4,6 +4,8 @@ import json
 import sys
 from pathlib import Path
 
+from jsonschema import validate
+
 
 def fail(msg):
     print(msg, file=sys.stderr)
@@ -17,6 +19,32 @@ def load_json(path):
         fail(f"Invalid JSON: {path} ({exc})")
 
 
+def validate_query_pools(root):
+    schema = load_json(root / "schemas/query-pool.schema.json")
+    for path in (root / "data/query-pools").glob("*.json"):
+        validate(instance=load_json(path), schema=schema)
+
+
+def validate_repair(root):
+    schema = load_json(root / "schemas/repair-validation.schema.json")
+    for path in (root / "data/repair-validations").glob("*.json"):
+        validate(instance=load_json(path), schema=schema)
+
+
+def validate_summary(root):
+    schema = load_json(root / "schemas/run-results.schema.json")
+    for rel in [
+        "data/runs/sample-run/summary.json",
+        "data/runs/sciverse-sample-run/summary.json",
+        "data/runs/repair-t7-run/summary.json",
+        "data/runs/repair-t14-run/summary.json",
+        "data/runs/multi-model-demo/summary.json",
+    ]:
+        path = root / rel
+        if path.exists():
+            validate(instance=load_json(path), schema=schema)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo-root", default=".")
@@ -25,17 +53,20 @@ def main():
     root = Path(args.repo_root).resolve()
     required = [
         root / "README.md",
+        root / "README.zh-CN.md",
+        root / "docs/for-beginners.md",
         root / "requirements.txt",
         root / "data/query-pools/mineru-example.json",
+        root / "data/query-pools/sciverse-api-integration-example.json",
         root / "data/models.sample.json",
         root / "data/models.multi.sample.json",
         root / "data/manual.sample.json",
         root / "data/manual.multi.sample.json",
         root / "data/runs/sample-run/summary.json",
-        root / "data/runs/repair-t7-run/summary.json",
-        root / "data/runs/multi-model-demo/summary.json",
+        root / "data/runs/sciverse-sample-run/summary.json",
         root / "scripts/run_monitor.py",
         root / "scripts/build_leaderboard.py",
+        root / "scripts/doctor.sh",
     ]
     missing = [str(p.relative_to(root)) for p in required if not p.exists()]
     if missing:
@@ -60,17 +91,11 @@ def main():
         if not isinstance(manual, dict) or not manual:
             fail(f"{manual_name} must be a non-empty object keyed by model_id::query_id.")
 
-    for summary_name in [
-        "data/runs/sample-run/summary.json",
-        "data/runs/repair-t7-run/summary.json",
-        "data/runs/multi-model-demo/summary.json",
-    ]:
-        summary = load_json(root / summary_name)
-        if "metrics" not in summary or "by_model" not in summary:
-            fail(f"{summary_name} must contain metrics and by_model.")
-
-    print(json.dumps({"status": "ok", "repo_root": str(root)}, ensure_ascii=False))
+    validate_query_pools(root)
+    validate_repair(root)
+    validate_summary(root)
+    print("validation passed")
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
