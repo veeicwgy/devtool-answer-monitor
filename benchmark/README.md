@@ -1,5 +1,7 @@
 # Public Benchmarks
 
+[English](README.md) · [简体中文](README.zh-CN.md)
+
 This folder contains public, version-controlled benchmark stories for the repository.
 
 ## Available pages

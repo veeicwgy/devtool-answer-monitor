@@ -1,4 +1,4 @@
-# Reader Guide for Non-Engineering Teammates
+# 非工程同学阅读指南
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
@@ -6,9 +6,9 @@
 
 | 先看什么 | 路径 | 用途 |
 |---|---|---|
-| 周报 | `data/runs/sample-run/weekly_report.md` | 先快速理解本周结论 |
+| 周报 | `data/runs/sample-run/weekly_report.md` | 先快速理解当前结论 |
 | 指标摘要 | `data/runs/sample-run/summary.json` | 再看结构化数值 |
 | Leaderboard | `data/leaderboards/model_leaderboard.md` | 看模型维度趋势 |
 | Repair validation | `data/repair-validations/*.json` | 看修复动作如何验证 |
 
-后续如果要扩展为 notebook 或 dashboard，可以直接读取 `summary.json` 与 `metrics.csv` 作为数据源。
+后续如果要扩展成 notebook 或 dashboard，可以直接读取 `summary.json` 与 `metrics.csv` 作为数据源。

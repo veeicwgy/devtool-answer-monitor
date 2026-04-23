@@ -45,6 +45,17 @@ def validate_summary(root):
             validate(instance=load_json(path), schema=schema)
 
 
+def validate_readme_pairs(root):
+    readmes = sorted(root.rglob("README.md"))
+    missing_pairs = []
+    for path in readmes:
+        zh_path = path.with_name("README.zh-CN.md")
+        if not zh_path.exists():
+            missing_pairs.append(str(path.relative_to(root)))
+    if missing_pairs:
+        fail("Missing Chinese README pair for: " + ", ".join(missing_pairs))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo-root", default=".")
@@ -94,6 +105,7 @@ def main():
     validate_query_pools(root)
     validate_repair(root)
     validate_summary(root)
+    validate_readme_pairs(root)
     print("validation passed")
 
 
